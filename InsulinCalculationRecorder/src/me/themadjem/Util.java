@@ -87,6 +87,28 @@ class Util {
     }
 
     /**
+     * Returns a parsed integer from a String
+     *
+     * @param s String
+     * @return integer from field
+     */
+    static int getInt(@NotNull String s) {
+        if (s.equalsIgnoreCase("") || s.isEmpty()) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            Output.infoBox("Error in parsing int\n" + e.getMessage(), "ERROR");
+            return 0;
+        }
+    }
+
+    static double getDouble(@NotNull String s) {
+        return new Double(s);
+    }
+
+    /**
      * Appends the given message to a given JTextPane with a given Color
      * Copied from StackOverFlow.com
      *
@@ -120,8 +142,34 @@ class Util {
         textPane.setEditable(false);
     }
 
+    /**
+     * Writes the given message to the given TextPane and appends a \n newline character
+     *
+     * @param msg message
+     * @param t   textpane
+     */
     static void writeln(String msg, @NotNull JTextPane t) {
         appendToPane(t, msg, Color.BLACK);
         appendToPane(t, "\n", Color.BLACK);
+    }
+
+    /**
+     * Shows a message in a popup to the user
+     *
+     * @param parentComponent parent window
+     * @param message         message
+     * @param title           title
+     * @param msgType         Type of message
+     */
+    static void showMessage(Component parentComponent, String message, String title, int msgType) {
+        JOptionPane.showMessageDialog(parentComponent, message, title, msgType);
+    }
+
+    /**
+     * @param ldt LocalDateTime
+     * @return LocalTime from a DateTime
+     */
+    static LocalTime getTime(@NotNull LocalDateTime ldt) {
+        return LocalTime.of(ldt.getHour(), ldt.getMinute());
     }
 }

@@ -11,7 +11,7 @@ import javax.swing.*;
  * @author Jesse Maddox
  *         Copyright 5/28/2017
  */
-class Main_UI {
+class Main_UI extends JFrame {
     final String LOG_PATH = "Log.log";
     private final String PROPERTIES_PATH = "data.properties";
     private JPanel panel1;
@@ -36,7 +36,7 @@ class Main_UI {
     private JTextField month_field;
     private JTextField day_field;
     private JTextField year_field;
-    private JCheckBox generateReportCheckBox;
+    private JCheckBox showCalcCheckBox;
     private JRadioButton AMRadioButton;
     private JRadioButton PMRadioButton;
     private JCheckBox doNotUseBGCheckBox;
@@ -59,9 +59,10 @@ class Main_UI {
     private JPanel iobTrackPanel;
     private JLabel insulinAmt;
     @NotNull
-    private final PropertiesUtil props = new PropertiesUtil(PROPERTIES_PATH, "Could not load properties", "Data");
+    private final PropertiesUtil props = new PropertiesUtil(PROPERTIES_PATH, "Data");
 
 
+    @NotNull
     private final IOB_Tracker tracker;
 
     /**
@@ -80,16 +81,22 @@ class Main_UI {
         enableEditingCheckBox.addActionListener(listener);
         manualDateCheckBox.addActionListener(listener);
         manualTimeCheckBox.addActionListener(listener);
+        carbs_field.addActionListener(listener);
+        carbs_field.setActionCommand(processButton.getActionCommand());
+        bg_field.addActionListener(listener);
+        bg_field.setActionCommand(processButton.getActionCommand());
 
-        JFrame frame = new JFrame("Insulin Calculator and Log");
-        frame.setContentPane(panel1);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocation(300, 300);
-        frame.setVisible(true);
+        this.setName("Insulin Calculator and Log");
+        this.setContentPane(panel1);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.pack();
+        this.setLocation(300, 300);
+        this.setVisible(true);
     }
 
+
+    /*YAY!!!*/
 
     /**
      * Loads properties and set variables accordingly
@@ -98,7 +105,7 @@ class Main_UI {
         try {
             props.loadParams();
         } catch (Exception e) {
-            Output.infoBox("Could not load properties", "ERROR");
+            Output.infoBox("Could not load properties...\n\nThis will happen the first time\nthe application is open.", "ERROR");
         }
         icr_field.setText(props.getProperty("ICR", "7"));
         correction_field.setText(props.getProperty("Corr", "30"));
@@ -106,6 +113,9 @@ class Main_UI {
         props.saveParamChanges();
     }
 
+    /**
+     * Updates
+     */
     void updateProperties() {
         props.setProperty("ICR", icr_field.getText());
         props.setProperty("Corr", correction_field.getText());
@@ -113,6 +123,9 @@ class Main_UI {
         props.saveParamChanges();
     }
 
+    /**
+     * Updates the Log pane with the latest version of the LOG_PATH file
+     */
     void updateLog() {
         try {
             Reader reader = new Reader(LOG_PATH);
@@ -207,8 +220,8 @@ class Main_UI {
         return manualTimeCheckBox;
     }
 
-    JCheckBox getGenerateReportCheckBox() {
-        return generateReportCheckBox;
+    JCheckBox getShowCalcCheckBox() {
+        return showCalcCheckBox;
     }
 
     JRadioButton getPMRadioButton() {
@@ -223,11 +236,15 @@ class Main_UI {
         return LogTextPane;
     }
 
+    JButton getProcessButton() {
+        return processButton;
+    }
+
     JLabel getIOBLab() {
         return insulinAmt;
     }
 
-    public IOB_Tracker getTracker() {
+    @NotNull IOB_Tracker getTracker() {
         return tracker;
     }
 

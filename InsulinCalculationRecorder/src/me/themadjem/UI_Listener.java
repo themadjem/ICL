@@ -27,10 +27,11 @@ class UI_Listener implements ActionListener {
      */
     @Override
     public void actionPerformed(@NotNull ActionEvent e) {
-        if (e.getActionCommand().equalsIgnoreCase("enable editing")) changeDataEditMode();
-        if (e.getActionCommand().equalsIgnoreCase("manual time")) changeTimeMode();
-        if (e.getActionCommand().equalsIgnoreCase("manual date")) changeDateMode();
-        if (e.getActionCommand().equalsIgnoreCase("process")) Main.process();
+        if (e.getActionCommand().equalsIgnoreCase(m.getEnableEditingCheckBox().getActionCommand())) changeDataEditMode();
+        if (e.getActionCommand().equalsIgnoreCase(m.getManualTimeCheckBox().getActionCommand())) changeTimeMode();
+        if (e.getActionCommand().equalsIgnoreCase(m.getManualDateCheckBox().getActionCommand())) changeDateMode();
+        if (e.getActionCommand().equalsIgnoreCase(m.getProcessButton().getActionCommand())) Main.process();
+
     }
 
     /**
