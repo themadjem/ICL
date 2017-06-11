@@ -11,14 +11,20 @@ class PropertiesUtil extends Properties {
     private final String path;
     private final String comments;
 
-    PropertiesUtil(String path, String errorMsg, String comments) {
+    /**
+     * Constructor
+     *
+     * @param path     path to properties file
+     * @param comments comments on the file
+     */
+    PropertiesUtil(String path, String comments) {
         this.path = path;
         this.comments = comments;
     }
 
     /**
      * Loads properties from the given path
-     *
+     * @throws Exception throws a fileIO exception
      */
     void loadParams() throws Exception {
         InputStream is;
@@ -46,7 +52,6 @@ class PropertiesUtil extends Properties {
 
     /**
      * Saves properties to the given path
-     *
      */
     void saveParamChanges() {
         try {

@@ -1,15 +1,15 @@
 package me.themadjem;
 
 import org.jetbrains.annotations.NotNull;
-import themadjem.util.Output;
 import themadjem.util.Writer;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * todo: JAVADOC all the things
+ * Main class used to run and manage the inner workings of the logic
  *
  * @author Jesse Maddox
  *         Copyright 5/28/2017
@@ -43,11 +43,13 @@ class Main {
     static void process() {
         updateVars();
         calculateUnits();
-        if (shouldGenReport()) showRes();
+        if (shouldShowCalculation()) showCalc();
+        new Thread(new ResultWindow(insulin)).start();
         if (shouldLog()) writeToLog();
         if (shouldGenIOB()) genIOBSchedule(insulin);
         m.updateLog();
     }
+
 
     /**
      * Reads input fields and updates data within the program for other functions to use
@@ -134,6 +136,10 @@ class Main {
         }
     }
 
+    private static void showCalc() {
+        JOptionPane.showMessageDialog(m, "Coming Soon!", "Calculation", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("\\res\\pic.png"));
+    }
+
     /**
      * Retrieves from the date fields in the UI
      * Returns a LocalDate Object of the given date
@@ -163,13 +169,6 @@ class Main {
                 hour,
                 Util.getInt(m.getMinute_field())
         );
-    }
-
-    /**
-     * Displays the info box with the amount of units to be given
-     */
-    private static void showRes() {
-        Output.infoBox(Util.formatDec(insulin) + " units", "Insulin");
     }
 
     /**
@@ -204,7 +203,7 @@ class Main {
      * @return true if the "Generate Report" checkbox is checked
      */
     private static boolean shouldGenReport() {
-        return m.getGenerateReportCheckBox().isSelected();
+        return m.getShowCalcCheckBox().isSelected();
     }
 
     /**
@@ -212,6 +211,13 @@ class Main {
      */
     private static boolean shouldNotUseBG() {
         return m.getDoNotUseBGCheckBox().isSelected();
+    }
+
+    /**
+     * @return true if ShowCalculationCheckBox is selected
+     */
+    private static boolean shouldShowCalculation() {
+        return m.getShowCalcCheckBox().isSelected();
     }
 
     /**
